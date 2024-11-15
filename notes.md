@@ -5,3 +5,4 @@
 
 15.11.2024: 
 - 20m Dicussion sur le protocol (MQTT)
+- 15m J'ai fini la partie analyse fonctionnel du rapport
