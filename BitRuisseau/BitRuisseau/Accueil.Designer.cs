@@ -29,6 +29,12 @@
         private void InitializeComponent()
         {
             panel1 = new Panel();
+            ValidateButton = new Button();
+            Password = new TextBox();
+            User = new TextBox();
+            Host = new TextBox();
+            label3 = new Label();
+            label2 = new Label();
             label1 = new Label();
             button3 = new Button();
             button2 = new Button();
@@ -36,18 +42,14 @@
             LocalFileView = new DataGridView();
             SearchBar = new TextBox();
             button4 = new Button();
-            label2 = new Label();
-            label3 = new Label();
-            Host = new TextBox();
-            User = new TextBox();
-            Password = new TextBox();
-            ValidateButton = new Button();
+            send = new Button();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)LocalFileView).BeginInit();
             SuspendLayout();
             // 
             // panel1
             // 
+            panel1.Controls.Add(send);
             panel1.Controls.Add(ValidateButton);
             panel1.Controls.Add(Password);
             panel1.Controls.Add(User);
@@ -62,6 +64,55 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(301, 679);
             panel1.TabIndex = 0;
+            // 
+            // ValidateButton
+            // 
+            ValidateButton.Location = new Point(112, 491);
+            ValidateButton.Name = "ValidateButton";
+            ValidateButton.Size = new Size(75, 23);
+            ValidateButton.TabIndex = 9;
+            ValidateButton.Text = "Valider";
+            ValidateButton.UseVisualStyleBackColor = true;
+            ValidateButton.Click += ValidateButton_Click;
+            // 
+            // Password
+            // 
+            Password.Location = new Point(102, 429);
+            Password.Name = "Password";
+            Password.Size = new Size(100, 23);
+            Password.TabIndex = 8;
+            // 
+            // User
+            // 
+            User.Location = new Point(102, 368);
+            User.Name = "User";
+            User.Size = new Size(100, 23);
+            User.TabIndex = 7;
+            // 
+            // Host
+            // 
+            Host.Location = new Point(102, 306);
+            Host.Name = "Host";
+            Host.Size = new Size(100, 23);
+            Host.TabIndex = 6;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(102, 411);
+            label3.Name = "label3";
+            label3.Size = new Size(77, 15);
+            label3.TabIndex = 5;
+            label3.Text = "Mot de passe";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(102, 350);
+            label2.Name = "label2";
+            label2.Size = new Size(60, 15);
+            label2.TabIndex = 4;
+            label2.Text = "Utilisateur";
             // 
             // label1
             // 
@@ -123,54 +174,15 @@
             button4.Text = "Delete all";
             button4.UseVisualStyleBackColor = true;
             // 
-            // label2
+            // send
             // 
-            label2.AutoSize = true;
-            label2.Location = new Point(102, 350);
-            label2.Name = "label2";
-            label2.Size = new Size(60, 15);
-            label2.TabIndex = 4;
-            label2.Text = "Utilisateur";
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(102, 411);
-            label3.Name = "label3";
-            label3.Size = new Size(77, 15);
-            label3.TabIndex = 5;
-            label3.Text = "Mot de passe";
-            // 
-            // Host
-            // 
-            Host.Location = new Point(102, 306);
-            Host.Name = "Host";
-            Host.Size = new Size(100, 23);
-            Host.TabIndex = 6;
-            // 
-            // User
-            // 
-            User.Location = new Point(102, 368);
-            User.Name = "User";
-            User.Size = new Size(100, 23);
-            User.TabIndex = 7;
-            // 
-            // Password
-            // 
-            Password.Location = new Point(102, 429);
-            Password.Name = "Password";
-            Password.Size = new Size(100, 23);
-            Password.TabIndex = 8;
-            // 
-            // ValidateButton
-            // 
-            ValidateButton.Location = new Point(112, 491);
-            ValidateButton.Name = "ValidateButton";
-            ValidateButton.Size = new Size(75, 23);
-            ValidateButton.TabIndex = 9;
-            ValidateButton.Text = "Valider";
-            ValidateButton.UseVisualStyleBackColor = true;
-            ValidateButton.Click += ValidateButton_Click;
+            send.Location = new Point(112, 550);
+            send.Name = "send";
+            send.Size = new Size(75, 23);
+            send.TabIndex = 10;
+            send.Text = "send";
+            send.UseVisualStyleBackColor = true;
+            send.Click += send_Click;
             // 
             // Accueil
             // 
@@ -206,5 +218,6 @@
         private Label label3;
         private Label label2;
         private Button ValidateButton;
+        private Button send;
     }
 }
