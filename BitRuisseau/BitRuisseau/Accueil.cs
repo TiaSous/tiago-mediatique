@@ -50,14 +50,14 @@ namespace BitRuisseau
 
         private async void ValidateButton_Click(object sender, EventArgs e)
         {
-            broker = new Broker(User.Text, Host.Text, Password.Text);
+            broker = new Broker(User.Text, Host.Text, Password.Text, list);
             broker.Connection();
 
         }
 
         private void send_Click(object sender, EventArgs e)
         {
-            broker.SendMessage("testTiago", "HELLO, qui a des musiques ?");
+            
         }
     }
 }

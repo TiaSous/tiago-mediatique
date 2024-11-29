@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using BitRuisseau.Classes;
 using System.Text.Json;
+using BitRuisseau.Classes.Enveloppe;
+using BitRuisseau.Interface;
 
 namespace BitRuisseau.Utils
 {
@@ -22,12 +24,14 @@ namespace BitRuisseau.Utils
         private MqttClientOptions options;
         private IMqttClient mqttClient;
         private MqttClientFactory mqttFactory = new MqttClientFactory();
+        private List<MediaData> listMediaData;
 
-        public Broker(string user, string host, string pass)
+        public Broker(string user, string host, string pass, List<MediaData> mediaData)
         {
             username = user;
             password = pass;
             broker = host;
+            listMediaData = mediaData;
 
             options = new MqttClientOptionsBuilder()
             .WithTcpServer(broker, port)
@@ -61,8 +65,8 @@ namespace BitRuisseau.Utils
                     return Task.CompletedTask;
                 };
             }
-
-            SendMessage(topic, "HELLO, qui a des musiques ?");
+            DemandeCatalogue demandeCatalogue = new DemandeCatalogue();
+            SendMessage(mqttClient, MessageType.DEMANDE_CATALOGUE, clientId, demandeCatalogue, topic);
             
             await Task.Delay(1000);
 
@@ -73,14 +77,27 @@ namespace BitRuisseau.Utils
             try
             {
                 Debug.Write(Encoding.UTF8.GetString(message.ApplicationMessage.Payload));
-                Enveloppe enveloppe = JsonSerializer.Deserialize<Enveloppe>(Encoding.UTF8.GetString(message.ApplicationMessage.Payload));
-                if (enveloppe.Content == $"HELLO, qui a des musiques ?" && enveloppe.Guid != clientId)
+                GenericEnvelope enveloppe = JsonSerializer.Deserialize<GenericEnvelope>(Encoding.UTF8.GetString(message.ApplicationMessage.Payload));
+                if (enveloppe.SenderId != clientId)
                 {
-                    Enveloppe response = new Enveloppe();
-                    response.Content = "Je n'ai pas de musique";
-                    response.Guid = clientId;
-                    SendMessage("testTiago", "Je n'ai pas de musique");
+                    if (enveloppe.MessageType == MessageType.ENVOIE_CATALOGUE)
+                    {
+                        EnvoieCatalogue enveloppeEnvoieCatalogue = JsonSerializer.Deserialize<EnvoieCatalogue>(enveloppe.EnveloppeJson);
+                    }
+                    else if (enveloppe.MessageType == MessageType.DEMANDE_CATALOGUE)
+                    {
+                        EnvoieCatalogue envoieCatalogue = new EnvoieCatalogue();
+                        envoieCatalogue.Content = listMediaData;
+                        SendMessage(mqttClient, MessageType.DEMANDE_CATALOGUE, clientId, envoieCatalogue, "test");
+
+                    }
+                    else if (enveloppe.MessageType == MessageType.ENVOIE_FICHIER)
+                    {
+                        EnvoieFichier enveloppeEnvoieFichier = JsonSerializer.Deserialize<EnvoieFichier>(enveloppe.EnveloppeJson);
+                    }
                 }
+                
+                
             }
             catch (Exception ex)
             {
@@ -90,11 +107,12 @@ namespace BitRuisseau.Utils
             
         }
 
-        async public void SendMessage(string topic, string text)
+        async public void SendMessage(IMqttClient mqttClient, MessageType type, string senderId, IJsonSerializableMessage Content, string topic)
         {
-            Enveloppe enveloppe = new Enveloppe();
-            enveloppe.Content = text;
-            enveloppe.Guid = clientId;
+            GenericEnvelope enveloppe = new GenericEnvelope();
+            enveloppe.SenderId = senderId;
+            enveloppe.EnveloppeJson = Content.ToJson();
+            enveloppe.MessageType = type;
             var message = new MqttApplicationMessageBuilder()
                 .WithTopic(topic)
                 .WithPayload(JsonSerializer.Serialize(enveloppe))
@@ -104,5 +122,7 @@ namespace BitRuisseau.Utils
             await mqttClient.PublishAsync(message);
             await Task.Delay(1000);
         }
+
+
     }
 }

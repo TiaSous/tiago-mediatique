@@ -42,14 +42,12 @@
             LocalFileView = new DataGridView();
             SearchBar = new TextBox();
             button4 = new Button();
-            send = new Button();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)LocalFileView).BeginInit();
             SuspendLayout();
             // 
             // panel1
             // 
-            panel1.Controls.Add(send);
             panel1.Controls.Add(ValidateButton);
             panel1.Controls.Add(Password);
             panel1.Controls.Add(User);
@@ -174,16 +172,6 @@
             button4.Text = "Delete all";
             button4.UseVisualStyleBackColor = true;
             // 
-            // send
-            // 
-            send.Location = new Point(112, 550);
-            send.Name = "send";
-            send.Size = new Size(75, 23);
-            send.TabIndex = 10;
-            send.Text = "send";
-            send.UseVisualStyleBackColor = true;
-            send.Click += send_Click;
-            // 
             // Accueil
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -218,6 +206,5 @@
         private Label label3;
         private Label label2;
         private Button ValidateButton;
-        private Button send;
     }
 }
