@@ -7,3 +7,6 @@
 - 20m Dicussion sur le protocol (MQTT)
 - 15m J'ai fini la partie analyse fonctionnel du rapport
 - 15m Finir la planification grace a l'analyse fonctionnel
+
+29.11.2024
+- 45m Je discute avec les autres et les montre comme mettre en place le protocol
