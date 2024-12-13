@@ -10,3 +10,6 @@
 
 29.11.2024
 - 45m Je discute avec les autres et les montre comme mettre en place le protocol
+
+13.12.2024
+- 30m Je discute avec Lucas L sur le mannière dont le protocol marche
