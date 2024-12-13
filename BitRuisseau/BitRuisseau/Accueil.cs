@@ -39,11 +39,6 @@ namespace BitRuisseau
                 data.File_duration = $"{duration.Minutes:D2}:{duration.Seconds:D2}";
                 list.Add(data);
             }
-
-
-
-
-
             LocalFileView.DataSource = list;
             LocalFileView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
@@ -55,9 +50,10 @@ namespace BitRuisseau
 
         }
 
-        private void send_Click(object sender, EventArgs e)
+        private void Explorer_Click(object sender, EventArgs e)
         {
-            
+            ExplorerForm explorerForm = new ExplorerForm();
+            explorerForm.ShowDialog();
         }
     }
 }

@@ -1,14 +1,14 @@
 ﻿namespace BitRuisseau
 {
-    partial class Accueil
+    partial class ExplorerForm
     {
         /// <summary>
-        ///  Required designer variable.
+        /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
         /// <summary>
-        ///  Clean up any resources being used.
+        /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
@@ -23,8 +23,8 @@
         #region Windows Form Designer generated code
 
         /// <summary>
-        ///  Required method for Designer support - do not modify
-        ///  the contents of this method with the code editor.
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
@@ -41,7 +41,6 @@
             button1 = new Button();
             LocalFileView = new DataGridView();
             SearchBar = new TextBox();
-            button4 = new Button();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)LocalFileView).BeginInit();
             SuspendLayout();
@@ -71,7 +70,6 @@
             ValidateButton.TabIndex = 9;
             ValidateButton.Text = "Valider";
             ValidateButton.UseVisualStyleBackColor = true;
-            ValidateButton.Click += ValidateButton_Click;
             // 
             // Password
             // 
@@ -138,7 +136,6 @@
             Explorer.TabIndex = 1;
             Explorer.Text = "Explorer";
             Explorer.UseVisualStyleBackColor = true;
-            Explorer.Click += Explorer_Click;
             // 
             // button1
             // 
@@ -164,25 +161,15 @@
             SearchBar.Size = new Size(472, 23);
             SearchBar.TabIndex = 2;
             // 
-            // button4
-            // 
-            button4.Location = new Point(1052, 135);
-            button4.Name = "button4";
-            button4.Size = new Size(170, 47);
-            button4.TabIndex = 3;
-            button4.Text = "Delete all";
-            button4.UseVisualStyleBackColor = true;
-            // 
-            // Accueil
+            // ExplorerForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1264, 681);
-            Controls.Add(button4);
             Controls.Add(SearchBar);
             Controls.Add(LocalFileView);
             Controls.Add(panel1);
-            Name = "Accueil";
+            Name = "ExplorerForm";
             Text = "Form1";
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
@@ -199,7 +186,6 @@
         private Button button3;
         private Button Explorer;
         private TextBox SearchBar;
-        private Button button4;
         private Label label1;
         private TextBox Password;
         private TextBox User;

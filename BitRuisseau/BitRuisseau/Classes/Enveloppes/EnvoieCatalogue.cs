@@ -8,11 +8,9 @@ using System.Threading.Tasks;
 
 namespace BitRuisseau.Classes.Enveloppe
 {
-    public class EnvoieFichier : IJsonSerializableMessage
+    public class EnvoieCatalogue : IJsonSerializableMessage
     {
-        private string _content;
-
-        public string Content { get => _content; set => _content = value; }
+        public List<MediaData> Content { get; set; }
 
         public string ToJson()
         {

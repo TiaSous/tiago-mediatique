@@ -1,5 +1,6 @@
 ﻿using BitRuisseau.Interface;
 using System;
+using System.Buffers.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,11 +9,9 @@ using System.Threading.Tasks;
 
 namespace BitRuisseau.Classes.Enveloppe
 {
-    public class EnvoieCatalogue : IJsonSerializableMessage
+    public class DemandeCatalogue : IJsonSerializableMessage
     {
-        private List<MediaData> _content;
-
-        public List<MediaData> Content { get => _content; set => _content = value; }
+        public string Content { get; set; }
 
         public string ToJson()
         {
