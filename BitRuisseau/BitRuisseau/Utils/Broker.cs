@@ -45,7 +45,7 @@ namespace BitRuisseau.Utils
 
         async public void Connection()
         {
-            string topic = "music";
+            string topic = "thomasTest";
 
             var connectResult = await mqttClient.ConnectAsync(options);
 
