@@ -14,3 +14,4 @@
 13.12.2024
 - 30m Je discute avec Lucas L sur le mannière dont le protocol marche
 - 70m Je fais des tests avec Lucas S et Thomas pour voir si j'arrive à récupérer leur catalogue
+- 10m Aider Lucas
