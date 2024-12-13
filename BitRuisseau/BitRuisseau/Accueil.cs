@@ -52,7 +52,7 @@ namespace BitRuisseau
 
         private void Explorer_Click(object sender, EventArgs e)
         {
-            ExplorerForm explorerForm = new ExplorerForm();
+            ExplorerForm explorerForm = new ExplorerForm(broker);
             explorerForm.ShowDialog();
         }
     }

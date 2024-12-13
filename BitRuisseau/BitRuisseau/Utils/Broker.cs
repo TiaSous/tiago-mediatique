@@ -25,7 +25,8 @@ namespace BitRuisseau.Utils
         private readonly IMqttClient mqttClient;
         private readonly MqttClientFactory mqttFactory = new MqttClientFactory();
         private readonly List<MediaData> _maListMediaData;
-
+        public Dictionary<string, List<MediaData>> otherMediaData = new Dictionary<string, List<MediaData>>();
+        
         public Broker(string user, string host, string pass, List<MediaData> mediaData)
         {
             username = user;
@@ -45,7 +46,7 @@ namespace BitRuisseau.Utils
 
         async public void Connection()
         {
-            string topic = "thomasTest";
+            string topic = "global";
 
             var connectResult = await mqttClient.ConnectAsync(options);
 
@@ -83,6 +84,15 @@ namespace BitRuisseau.Utils
                     case MessageType.ENVOIE_CATALOGUE:
                     {
                         EnvoieCatalogue enveloppeEnvoieCatalogue = JsonSerializer.Deserialize<EnvoieCatalogue>(enveloppe.EnveloppeJson);
+                        if (otherMediaData.ContainsKey(enveloppe.SenderId))
+                        {
+                            otherMediaData[enveloppe.SenderId] = enveloppeEnvoieCatalogue.Content;
+                        }
+                        else
+                        {
+                            otherMediaData.Add(enveloppe.SenderId, new List<MediaData>());
+                            otherMediaData[enveloppe.SenderId] = enveloppeEnvoieCatalogue.Content;
+                        }
                         break;
                     }
                     case MessageType.DEMANDE_CATALOGUE:
