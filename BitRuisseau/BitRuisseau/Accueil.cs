@@ -11,7 +11,7 @@ namespace BitRuisseau
     public partial class Accueil : Form
     {
         List<MediaData> list;
-        Broker broker;
+        Broker broker = null;
         public Accueil()
         {
             InitializeComponent();
@@ -30,13 +30,13 @@ namespace BitRuisseau
                 var tfile = TagLib.File.Create(path);
 
                 FileInfo fileInfo = new FileInfo(path);
-                data.File_size = fileInfo.Length;
+                data.Size = fileInfo.Length;
 
-                data.File_name = tfile.Tag.Title;
-                data.File_type = Path.GetExtension(path);
-                data.File_artist = tfile.Tag.FirstPerformer;
+                data.Title = tfile.Tag.Title;
+                data.Type = Path.GetExtension(path);
+                data.Artist = tfile.Tag.FirstPerformer;
                 TimeSpan duration = tfile.Properties.Duration;
-                data.File_duration = $"{duration.Minutes:D2}:{duration.Seconds:D2}";
+                data.Duration = $"{duration.Minutes:D2}:{duration.Seconds:D2}";
                 list.Add(data);
             }
             LocalFileView.DataSource = list;
@@ -47,7 +47,6 @@ namespace BitRuisseau
         {
             broker = new Broker(User.Text, Host.Text, Password.Text, list);
             broker.Connection();
-
         }
 
         private void Explorer_Click(object sender, EventArgs e)

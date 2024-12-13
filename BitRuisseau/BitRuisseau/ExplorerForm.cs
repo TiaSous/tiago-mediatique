@@ -17,9 +17,11 @@ namespace BitRuisseau
         public ExplorerForm(Broker broker)
         {
             InitializeComponent();
+ 
             List<MediaData> mediaData = broker.otherMediaData.Values.SelectMany(list => list).ToList();
             LocalFileView.DataSource = mediaData;
             LocalFileView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            
         }
     }
 }

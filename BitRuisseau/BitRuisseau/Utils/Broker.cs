@@ -18,7 +18,7 @@ namespace BitRuisseau.Utils
     {
         private readonly string broker;
         private readonly int port = 1883;
-        private readonly string clientId = Guid.NewGuid().ToString();
+        private readonly string clientId = "Tiago-Mediatique";
         private readonly string username;
         private readonly string password;
         private readonly MqttClientOptions options;
@@ -26,6 +26,7 @@ namespace BitRuisseau.Utils
         private readonly MqttClientFactory mqttFactory = new MqttClientFactory();
         private readonly List<MediaData> _maListMediaData;
         public Dictionary<string, List<MediaData>> otherMediaData = new Dictionary<string, List<MediaData>>();
+        string topic = "thomasTest";
         
         public Broker(string user, string host, string pass, List<MediaData> mediaData)
         {
@@ -43,10 +44,10 @@ namespace BitRuisseau.Utils
 
             mqttClient = mqttFactory.CreateMqttClient();
         }
-
+        /// Envoie demande catalogue dès qu'il est connecté
         async public void Connection()
         {
-            string topic = "global";
+            
 
             var connectResult = await mqttClient.ConnectAsync(options);
 
@@ -64,14 +65,14 @@ namespace BitRuisseau.Utils
                     return Task.CompletedTask;
                 };
             }
-            DemandeCatalogue demandeCatalogue = new DemandeCatalogue();
-            SendMessage(mqttClient, MessageType.DEMANDE_CATALOGUE, clientId, demandeCatalogue, topic);
+            AskCatalog askCatalog = new AskCatalog();
+            SendMessage(mqttClient, MessageType.DEMANDE_CATALOGUE, clientId, askCatalog, topic);
             
             await Task.Delay(1000);
 
         }
 
-        // Quand il reçoit des messages
+        /// Quand il reçoit des messages
         private void ReiceiveMessage(MqttApplicationMessageReceivedEventArgs message)
         {
             try
@@ -83,28 +84,29 @@ namespace BitRuisseau.Utils
                 {
                     case MessageType.ENVOIE_CATALOGUE:
                     {
-                        EnvoieCatalogue enveloppeEnvoieCatalogue = JsonSerializer.Deserialize<EnvoieCatalogue>(enveloppe.EnveloppeJson);
+                        SendCatalog enveloppeSendCatalog = JsonSerializer.Deserialize<SendCatalog>(enveloppe.EnveloppeJson);
+                        Console.WriteLine(enveloppeSendCatalog);
                         if (otherMediaData.ContainsKey(enveloppe.SenderId))
                         {
-                            otherMediaData[enveloppe.SenderId] = enveloppeEnvoieCatalogue.Content;
+                            otherMediaData[enveloppe.SenderId] = enveloppeSendCatalog.Content;
                         }
                         else
                         {
                             otherMediaData.Add(enveloppe.SenderId, new List<MediaData>());
-                            otherMediaData[enveloppe.SenderId] = enveloppeEnvoieCatalogue.Content;
+                            otherMediaData[enveloppe.SenderId] = enveloppeSendCatalog.Content;
                         }
                         break;
                     }
                     case MessageType.DEMANDE_CATALOGUE:
                     {
-                        EnvoieCatalogue envoieCatalogue = new EnvoieCatalogue();
-                        envoieCatalogue.Content = _maListMediaData;
-                        SendMessage(mqttClient, MessageType.ENVOIE_CATALOGUE, clientId, envoieCatalogue, "test");
+                        SendCatalog sendCatalog = new SendCatalog();
+                        sendCatalog.Content = _maListMediaData;
+                        SendMessage(mqttClient, MessageType.ENVOIE_CATALOGUE, clientId, sendCatalog, topic);
                         break;
                     }
                     case MessageType.ENVOIE_FICHIER:
                     {
-                        EnvoieFichier enveloppeEnvoieFichier = JsonSerializer.Deserialize<EnvoieFichier>(enveloppe.EnveloppeJson);
+                        SendMusic enveloppeSendMusic = JsonSerializer.Deserialize<SendMusic>(enveloppe.EnveloppeJson);
                         break;
                     }
                 }
@@ -116,7 +118,8 @@ namespace BitRuisseau.Utils
                 Debug.WriteLine(ex.ToString());
             } 
         }
-
+        
+        /// Envoie tous les types de message
         private async void SendMessage(IMqttClient mqttClient, MessageType type, string senderId, IJsonSerializableMessage content, string topic)
         {
             GenericEnvelope enveloppe = new GenericEnvelope();
@@ -132,7 +135,5 @@ namespace BitRuisseau.Utils
             await mqttClient.PublishAsync(message);
             await Task.Delay(1000);
         }
-
-
     }
 }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BitRuisseau.Classes.Enveloppe
 {
-    public class DemandeCatalogue : IJsonSerializableMessage
+    public class AskCatalog : IJsonSerializableMessage
     {
         public string Content { get; set; }
 

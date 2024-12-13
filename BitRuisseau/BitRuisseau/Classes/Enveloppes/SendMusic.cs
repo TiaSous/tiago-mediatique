@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BitRuisseau.Classes.Enveloppe
 {
-    public class EnvoieFichier : IJsonSerializableMessage
+    public class SendMusic : IJsonSerializableMessage
     {
         public string Content { get; set; }
 
