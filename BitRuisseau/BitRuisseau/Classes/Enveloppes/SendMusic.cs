@@ -11,6 +11,7 @@ namespace BitRuisseau.Classes.Enveloppe
     public class SendMusic : IJsonSerializableMessage
     {
         public string Content { get; set; }
+        public MediaData FileInfo { get; set; }
 
         public string ToJson()
         {

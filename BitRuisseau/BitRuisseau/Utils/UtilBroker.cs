@@ -56,7 +56,7 @@ namespace BitRuisseau.Utils
 
                 mqttClient.ApplicationMessageReceivedAsync += e =>
                 {
-                    ReiceiveMessage(e);
+                    ReceiveMessage(e);
                     return Task.CompletedTask;
                 };
             }
@@ -70,7 +70,7 @@ namespace BitRuisseau.Utils
         /// Quand il reçoit des messages
         /// </summary>
         /// <param name="message"></param>
-        private static void ReiceiveMessage(MqttApplicationMessageReceivedEventArgs message)
+        private static void ReceiveMessage(MqttApplicationMessageReceivedEventArgs message)
         {
             try
             {
@@ -90,9 +90,20 @@ namespace BitRuisseau.Utils
                         SendMessage(MessageType.ENVOIE_CATALOGUE, clientId, sendCatalog, "global");
                         break;
                     }
+                    case MessageType.DEMANDE_FICHIER:
+                    {
+                        AskMusic askMusic = JsonSerializer.Deserialize<AskMusic>(enveloppe.EnveloppeJson);
+                        SendMusic sendMusic = new SendMusic();
+                        sendMusic.Content = UtilMusic.TransformMediaInBase64(askMusic.FileName);
+                        sendMusic.FileInfo = UtilMusic.GetMediaDataWithFileName(askMusic.FileName);
+                        SendMessage(MessageType.ENVOIE_FICHIER, clientId, sendMusic, enveloppe.SenderId);
+                        break;
+                    }
                     case MessageType.ENVOIE_FICHIER:
                     {
-                        SendMusic enveloppeSendMusic = JsonSerializer.Deserialize<SendMusic>(enveloppe.EnveloppeJson);
+                        SendMusic sendMusic = JsonSerializer.Deserialize<SendMusic>(enveloppe.EnveloppeJson);
+                        UtilMusic.TransformBase64InMedia(sendMusic);
+                        UtilMusic.UpdateLocalListMusic();
                         break;
                     }
                 }
@@ -137,7 +148,7 @@ namespace BitRuisseau.Utils
         public static void AskForMusic(MediaData mediaData)
         {
             AskMusic askMusic = new AskMusic();
-            askMusic.FileName = mediaData.Title;
+            askMusic.FileName = mediaData.Title + mediaData.Type;
             SendMessage(MessageType.DEMANDE_FICHIER, clientId, askMusic, UtilMusic.GetSomeoneWithMediaData(mediaData));
         }
     }

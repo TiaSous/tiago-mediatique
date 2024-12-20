@@ -56,7 +56,7 @@ public static class UtilMusic
             FileInfo fileInfo = new FileInfo(path);
             data.Size = fileInfo.Length;
 
-            data.Title = fileInfo.Name;
+            data.Title = fileInfo.Name.Replace(fileInfo.Extension, "");
             data.Type = Path.GetExtension(path);
             data.Artist = tfile.Tag.FirstPerformer;
             TimeSpan duration = tfile.Properties.Duration;
@@ -73,5 +73,25 @@ public static class UtilMusic
     public static string GetSomeoneWithMediaData(MediaData media)
     {
         return OtherMusic.First(keyValue => keyValue.Value.Contains(media)).Key;
+    }
+
+    public static MediaData GetMediaDataWithFileName(string fileName)
+    {
+        string nameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
+        return LocalMusic.First(music => music.Title == nameWithoutExtension);
+    }
+    
+    public static string TransformMediaInBase64(string fileName)
+    {
+        string path = "C:\\BitRuisseau\\" + fileName;
+        return Convert.ToBase64String(File.ReadAllBytes(path));
+    }
+
+    public static void TransformBase64InMedia(SendMusic musicData)
+    {
+        MediaData metaData = musicData.FileInfo;
+        byte[] file = Convert.FromBase64String(musicData.Content);
+        string path = "C:\\BitRuisseau\\" + metaData.Title + metaData.Type;
+        File.WriteAllBytes(path, file);
     }
 }
