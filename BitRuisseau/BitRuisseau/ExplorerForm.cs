@@ -14,11 +14,11 @@ namespace BitRuisseau
 {
     public partial class ExplorerForm : Form
     {
-        public ExplorerForm(Broker broker)
+        public ExplorerForm()
         {
             InitializeComponent();
  
-            List<MediaData> mediaData = broker.otherMediaData.Values.SelectMany(list => list).ToList();
+            List<MediaData> mediaData = UtilMusic.OtherMusic.Values.SelectMany(list => list).ToList();
             LocalFileView.DataSource = mediaData;
             LocalFileView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             

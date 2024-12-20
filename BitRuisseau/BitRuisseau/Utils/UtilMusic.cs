@@ -3,27 +3,52 @@ using BitRuisseau.Classes;
 using BitRuisseau.Classes.Enveloppe;
 namespace BitRuisseau.Utils;
 
-public static class Util
+public static class UtilMusic
 {
-    private static List<MediaData> _localMusic = new List<MediaData>();
-    private static Dictionary<string, List<MediaData>> _otherMusic = new Dictionary<string, List<MediaData>>();
+    public static List<MediaData> LocalMusic { get; } = new List<MediaData>();
+    public static Dictionary<string, List<MediaData>> OtherMusic { get; } = new Dictionary<string, List<MediaData>>();
 
     public static void AddMusic(MediaData media)
     {
-        _localMusic.Add(media);
+        LocalMusic.Add(media);
     }
     public static void AddOtherMusic(GenericEnvelope envelope)
     {
         SendCatalog enveloppeSendCatalog = JsonSerializer.Deserialize<SendCatalog>(envelope.EnveloppeJson);
         Console.WriteLine(enveloppeSendCatalog);
-        if (_otherMusic.ContainsKey(envelope.SenderId))
+        if (OtherMusic.ContainsKey(envelope.SenderId))
         {
-            _otherMusic[envelope.SenderId] = enveloppeSendCatalog.Content;
+            OtherMusic[envelope.SenderId] = enveloppeSendCatalog.Content;
         }
         else
         {
-            _otherMusic.Add(envelope.SenderId, new List<MediaData>());
-            _otherMusic[envelope.SenderId] = enveloppeSendCatalog.Content;
+            OtherMusic.Add(envelope.SenderId, new List<MediaData>());
+            OtherMusic[envelope.SenderId] = enveloppeSendCatalog.Content;
+        }
+    }
+
+    public static void UpdateLocalListMusic()
+    {
+        if (!Directory.Exists("C:\\BitRuisseau"))
+        {
+            Directory.CreateDirectory("C:\\BitRuisseau");
+        }
+        string[] paths = Directory.GetFiles("C:\\BitRuisseau");
+
+        foreach (string path in paths)
+        {
+            MediaData data = new MediaData();
+            var tfile = TagLib.File.Create(path);
+
+            FileInfo fileInfo = new FileInfo(path);
+            data.Size = fileInfo.Length;
+
+            data.Title = tfile.Tag.Title;
+            data.Type = Path.GetExtension(path);
+            data.Artist = tfile.Tag.FirstPerformer;
+            TimeSpan duration = tfile.Properties.Duration;
+            data.Duration = $"{duration.Minutes:D2}:{duration.Seconds:D2}";
+            AddMusic(data);
         }
     }
 }
