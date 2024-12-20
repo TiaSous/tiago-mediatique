@@ -8,17 +8,14 @@ namespace BitRuisseau.Classes
 {
     public class MediaData
     {
-        private string _title;
-        private string _artist;
-        private string _type;
-        private long _size;
-        private string _duration;
+        public string Title { get; set; }
 
-        public string Title { get => _title; set => _title = value; }
-        public string Artist { get => _artist; set => _artist = value; }
-        public string Type { get => _type; set => _type = value; }
-        public long Size { get => _size; set => _size = value; }
-        public string Duration { get => _duration; set => _duration = value; }
-        
+        public string Artist { get; set; }
+
+        public string Type { get; set; }
+
+        public long Size { get; set; }
+
+        public string Duration { get; set; }
     }
 }

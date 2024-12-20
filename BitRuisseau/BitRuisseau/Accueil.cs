@@ -19,9 +19,9 @@ namespace BitRuisseau
             LocalFileView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
-        private async void ValidateButton_Click(object sender, EventArgs e)
+        private void ValidateButton_Click(object sender, EventArgs e)
         {
-           await UtilBroker.Connection(User.Text, Password.Text, Host.Text);
+           UtilBroker.Connection(User.Text, Password.Text, Host.Text);
         }
 
         private void Explorer_Click(object sender, EventArgs e)

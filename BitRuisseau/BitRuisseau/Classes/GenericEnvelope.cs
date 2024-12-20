@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BitRuisseau.Classes
 {
-    public class GenericEnvelop
+    public class GenericEnvelope
     {
         public MessageType MessageType { get; set; }
 

@@ -29,41 +29,51 @@ namespace BitRuisseau.Utils
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <param name="host"></param>
-        public static async Task Connection(string username, string password, string host)
+        public static async void Connection(string username, string password, string host)
         {
-            options = new MqttClientOptionsBuilder()
-                .WithTcpServer(host, port)
-                .WithCredentials(username, password)
-                .WithClientId(clientId)
-                .WithCleanSession()
-                .Build();
-
-            mqttClient = mqttFactory.CreateMqttClient();
-
-            var connectResult = await mqttClient.ConnectAsync(options);
-
-            if (connectResult.ResultCode == MqttClientConnectResultCode.Success)
+            try
             {
-                await mqttClient.SubscribeAsync(new MqttTopicFilterBuilder()
-                    .WithTopic("global")
-                    .WithNoLocal(true)
-                    .Build());
-                
-                await mqttClient.SubscribeAsync(new MqttTopicFilterBuilder()
-                    .WithTopic(clientId)
-                    .WithNoLocal(true)
-                    .Build());
+                options = new MqttClientOptionsBuilder()
+                    .WithTcpServer(host, port)
+                    .WithCredentials(username, password)
+                    .WithClientId(clientId)
+                    .WithCleanSession()
+                    .Build();
 
-                mqttClient.ApplicationMessageReceivedAsync += e =>
+                mqttClient = mqttFactory.CreateMqttClient();
+
+                var connectResult = await mqttClient.ConnectAsync(options);
+
+                if (connectResult.ResultCode == MqttClientConnectResultCode.Success)
                 {
-                    ReceiveMessage(e);
-                    return Task.CompletedTask;
-                };
-            }
+                    await mqttClient.SubscribeAsync(new MqttTopicFilterBuilder()
+                        .WithTopic("global")
+                        .WithNoLocal(true)
+                        .Build());
 
-            AskCatalog askCatalog = new AskCatalog();
-            SendMessage(MessageType.DEMANDE_CATALOGUE, clientId, askCatalog, "global");
-            await Task.Delay(100);
+                    await mqttClient.SubscribeAsync(new MqttTopicFilterBuilder()
+                        .WithTopic(clientId)
+                        .WithNoLocal(true)
+                        .Build());
+
+                    mqttClient.ApplicationMessageReceivedAsync += e =>
+                    {
+                        ReceiveMessage(e);
+                        return Task.CompletedTask;
+                    };
+                    AskCatalog askCatalog = new AskCatalog();
+                    SendMessage(MessageType.DEMANDE_CATALOGUE, clientId, askCatalog, "global");
+                    MessageBox.Show("Connexion réussie!", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show($"Erreur : Identifiant non valide", "Échec de la connexion", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erreur : {ex.Message}", "Échec de la connexion", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>
@@ -74,13 +84,13 @@ namespace BitRuisseau.Utils
         {
             try
             {
-                GenericEnvelop enveloppe = JsonSerializer.Deserialize<GenericEnvelop>(Encoding.UTF8.GetString(message.ApplicationMessage.Payload));
-                if (enveloppe.SenderId == clientId) return;
-                switch (enveloppe.MessageType)
+                GenericEnvelope envelope = JsonSerializer.Deserialize<GenericEnvelope>(Encoding.UTF8.GetString(message.ApplicationMessage.Payload));
+                if (envelope.SenderId == clientId) return;
+                switch (envelope.MessageType)
                 {
                     case MessageType.ENVOIE_CATALOGUE:
                     {
-                        UtilMusic.AddOtherMusic(enveloppe);
+                        UtilMusic.AddOtherMusic(envelope);
                         break;
                     }
                     case MessageType.DEMANDE_CATALOGUE:
@@ -92,16 +102,16 @@ namespace BitRuisseau.Utils
                     }
                     case MessageType.DEMANDE_FICHIER:
                     {
-                        AskMusic askMusic = JsonSerializer.Deserialize<AskMusic>(enveloppe.EnveloppeJson);
+                        AskMusic askMusic = JsonSerializer.Deserialize<AskMusic>(envelope.EnvelopeJson);
                         SendMusic sendMusic = new SendMusic();
                         sendMusic.Content = UtilMusic.TransformMediaInBase64(askMusic.FileName);
                         sendMusic.FileInfo = UtilMusic.GetMediaDataWithFileName(askMusic.FileName);
-                        SendMessage(MessageType.ENVOIE_FICHIER, clientId, sendMusic, enveloppe.SenderId);
+                        SendMessage(MessageType.ENVOIE_FICHIER, clientId, sendMusic, envelope.SenderId);
                         break;
                     }
                     case MessageType.ENVOIE_FICHIER:
                     {
-                        SendMusic sendMusic = JsonSerializer.Deserialize<SendMusic>(enveloppe.EnveloppeJson);
+                        SendMusic sendMusic = JsonSerializer.Deserialize<SendMusic>(envelope.EnvelopeJson);
                         UtilMusic.TransformBase64InMedia(sendMusic);
                         UtilMusic.UpdateLocalListMusic();
                         break;
@@ -126,13 +136,13 @@ namespace BitRuisseau.Utils
         {
             try
             {
-                GenericEnvelop enveloppe = new GenericEnvelop();
-                enveloppe.SenderId = senderId;
-                enveloppe.EnveloppeJson = content.ToJson();
-                enveloppe.MessageType = type;
+                GenericEnvelope envelope = new GenericEnvelope();
+                envelope.SenderId = senderId;
+                envelope.EnvelopeJson = content.ToJson();
+                envelope.MessageType = type;
                 var message = new MqttApplicationMessageBuilder()
                     .WithTopic(topic)
-                    .WithPayload(JsonSerializer.Serialize(enveloppe))
+                    .WithPayload(JsonSerializer.Serialize(envelope))
                     .WithQualityOfServiceLevel(MqttQualityOfServiceLevel.AtMostOnce)
                     .Build();
 

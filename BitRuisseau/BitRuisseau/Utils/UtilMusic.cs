@@ -20,19 +20,18 @@ public static class UtilMusic
     /// <summary>
     /// Ajoute ou met à jour le catalogue des autres en plus
     /// </summary>
-    /// <param name="envelop"></param>
-    public static void AddOtherMusic(GenericEnvelop envelop)
+    /// <param name="envelope"></param>
+    public static void AddOtherMusic(GenericEnvelope envelope)
     {
-        SendCatalog enveloppeSendCatalog = JsonSerializer.Deserialize<SendCatalog>(envelop.EnveloppeJson);
-        Console.WriteLine(enveloppeSendCatalog);
-        if (OtherMusic.ContainsKey(envelop.SenderId))
+        SendCatalog envelopeSendCatalog = JsonSerializer.Deserialize<SendCatalog>(envelope.EnvelopeJson);
+        if (OtherMusic.ContainsKey(envelope.SenderId))
         {
-            OtherMusic[envelop.SenderId] = enveloppeSendCatalog.Content;
+            OtherMusic[envelope.SenderId] = envelopeSendCatalog.Content;
         }
         else
         {
-            OtherMusic.Add(envelop.SenderId, new List<MediaData>());
-            OtherMusic[envelop.SenderId] = enveloppeSendCatalog.Content;
+            OtherMusic.Add(envelope.SenderId, new List<MediaData>());
+            OtherMusic[envelope.SenderId] = envelopeSendCatalog.Content;
         }
     }
 
@@ -80,18 +79,27 @@ public static class UtilMusic
         string nameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
         return LocalMusic.First(music => music.Title == nameWithoutExtension);
     }
-    
+    /// <summary>
+    /// Transforme les médias en base 64
+    /// </summary>
+    /// <param name="fileName"></param>
+    /// <returns></returns>
     public static string TransformMediaInBase64(string fileName)
     {
         string path = "C:\\BitRuisseau\\" + fileName;
         return Convert.ToBase64String(File.ReadAllBytes(path));
     }
-
+    
+    /// <summary>
+    /// Transforme la musique qui est en base 64 en MP3
+    /// </summary>
+    /// <param name="musicData"></param>
     public static void TransformBase64InMedia(SendMusic musicData)
     {
         MediaData metaData = musicData.FileInfo;
         byte[] file = Convert.FromBase64String(musicData.Content);
         string path = "C:\\BitRuisseau\\" + metaData.Title + metaData.Type;
         File.WriteAllBytes(path, file);
+        MessageBox.Show("Téléchargement réussi", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
     }
 }
