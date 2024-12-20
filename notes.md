@@ -18,3 +18,4 @@
 
 20.12.2024
 - 20m J'aide différentes personnes pour implémenter la partie MQTT
+- 45m J'aide différentes personnes pour implémenter la partie MQTT
