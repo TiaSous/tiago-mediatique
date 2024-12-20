@@ -17,7 +17,7 @@ namespace BitRuisseau.Utils
     public static class UtilBroker
     {
         private static readonly int port = 1883;
-        private static readonly string clientId = "Tiago-Mediatique";
+        private static readonly string clientId = Guid.NewGuid().ToString();
         private static MqttClientOptions options;
         private static IMqttClient mqttClient;
         private static readonly MqttClientFactory mqttFactory = new MqttClientFactory();
@@ -48,6 +48,11 @@ namespace BitRuisseau.Utils
                     .WithTopic("global")
                     .WithNoLocal(true)
                     .Build());
+                
+                await mqttClient.SubscribeAsync(new MqttTopicFilterBuilder()
+                    .WithTopic(clientId)
+                    .WithNoLocal(true)
+                    .Build());
 
                 mqttClient.ApplicationMessageReceivedAsync += e =>
                 {
@@ -57,7 +62,7 @@ namespace BitRuisseau.Utils
             }
 
             AskCatalog askCatalog = new AskCatalog();
-            SendMessage(mqttClient, MessageType.DEMANDE_CATALOGUE, clientId, askCatalog, "global");
+            SendMessage(MessageType.DEMANDE_CATALOGUE, clientId, askCatalog, "global");
             await Task.Delay(100);
         }
 
@@ -82,12 +87,12 @@ namespace BitRuisseau.Utils
                     {
                         SendCatalog sendCatalog = new SendCatalog();
                         sendCatalog.Content = UtilMusic.LocalMusic;
-                        SendMessage(mqttClient, MessageType.ENVOIE_CATALOGUE, clientId, sendCatalog, "global");
+                        SendMessage(MessageType.ENVOIE_CATALOGUE, clientId, sendCatalog, "global");
                         break;
                     }
                     case MessageType.ENVOIE_FICHIER:
                     {
-                        SendMusic enveloppeSendMusic = JsonSerializer.Deserialize<SendMusic>(enveloppe.EnvelopJson);
+                        SendMusic enveloppeSendMusic = JsonSerializer.Deserialize<SendMusic>(enveloppe.EnveloppeJson);
                         break;
                     }
                 }
@@ -106,13 +111,13 @@ namespace BitRuisseau.Utils
         /// <param name="senderId"></param>
         /// <param name="content"></param>
         /// <param name="topic"></param>
-        private static async void SendMessage(IMqttClient mqttClient, MessageType type, string senderId, IJsonSerializableMessage content, string topic)
+        private static async void SendMessage(MessageType type, string senderId, IJsonSerializableMessage content, string topic)
         {
             try
             {
                 GenericEnvelop enveloppe = new GenericEnvelop();
                 enveloppe.SenderId = senderId;
-                enveloppe.EnvelopJson = content.ToJson();
+                enveloppe.EnveloppeJson = content.ToJson();
                 enveloppe.MessageType = type;
                 var message = new MqttApplicationMessageBuilder()
                     .WithTopic(topic)
@@ -127,6 +132,13 @@ namespace BitRuisseau.Utils
             {
                 Console.WriteLine(ex);
             }
+        }
+
+        public static void AskForMusic(MediaData mediaData)
+        {
+            AskMusic askMusic = new AskMusic();
+            askMusic.FileName = mediaData.Title;
+            SendMessage(MessageType.DEMANDE_FICHIER, clientId, askMusic, UtilMusic.GetSomeoneWithMediaData(mediaData));
         }
     }
 }

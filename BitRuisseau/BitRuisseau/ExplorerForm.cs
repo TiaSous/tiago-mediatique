@@ -14,14 +14,21 @@ namespace BitRuisseau
 {
     public partial class ExplorerForm : Form
     {
+        private List<MediaData> sourceData;
         public ExplorerForm()
         {
             InitializeComponent();
  
-            List<MediaData> mediaData = UtilMusic.OtherMusic.Values.SelectMany(list => list).ToList();
-            LocalFileView.DataSource = mediaData;
+            sourceData = UtilMusic.OtherMusic.Values.SelectMany(list => list).ToList();
+            LocalFileView.DataSource = sourceData;
             LocalFileView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             
+        }
+
+        private void LocalFileView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            MediaData searchMusic = sourceData[e.RowIndex];
+            UtilBroker.AskForMusic(searchMusic);
         }
     }
 }

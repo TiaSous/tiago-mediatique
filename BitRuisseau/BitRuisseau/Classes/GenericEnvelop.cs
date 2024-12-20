@@ -13,6 +13,6 @@ namespace BitRuisseau.Classes
 
         public string SenderId { get; set; }
 
-        public string EnvelopJson { get; set; }
+        public string EnveloppeJson { get; set; }
     }
 }

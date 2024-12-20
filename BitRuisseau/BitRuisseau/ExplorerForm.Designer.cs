@@ -82,6 +82,7 @@
             LocalFileView.Name = "LocalFileView";
             LocalFileView.Size = new System.Drawing.Size(861, 454);
             LocalFileView.TabIndex = 1;
+            LocalFileView.CellContentClick += LocalFileView_CellContentClick;
             // 
             // SearchBar
             // 
@@ -109,7 +110,7 @@
 
         private System.Windows.Forms.Panel panel1;
         private Button button1;
-        private DataGridView LocalFileView;
+        private System.Windows.Forms.DataGridView LocalFileView;
         private Button button3;
         private Button Explorer;
         private TextBox SearchBar;

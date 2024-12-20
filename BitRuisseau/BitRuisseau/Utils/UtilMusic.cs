@@ -23,7 +23,7 @@ public static class UtilMusic
     /// <param name="envelop"></param>
     public static void AddOtherMusic(GenericEnvelop envelop)
     {
-        SendCatalog enveloppeSendCatalog = JsonSerializer.Deserialize<SendCatalog>(envelop.EnvelopJson);
+        SendCatalog enveloppeSendCatalog = JsonSerializer.Deserialize<SendCatalog>(envelop.EnveloppeJson);
         Console.WriteLine(enveloppeSendCatalog);
         if (OtherMusic.ContainsKey(envelop.SenderId))
         {
@@ -56,12 +56,22 @@ public static class UtilMusic
             FileInfo fileInfo = new FileInfo(path);
             data.Size = fileInfo.Length;
 
-            data.Title = tfile.Tag.Title;
+            data.Title = fileInfo.Name;
             data.Type = Path.GetExtension(path);
             data.Artist = tfile.Tag.FirstPerformer;
             TimeSpan duration = tfile.Properties.Duration;
             data.Duration = $"{duration.Minutes:D2}:{duration.Seconds:D2}";
             AddMusic(data);
         }
+    }
+    
+    /// <summary>
+    /// Va retourner la 1ère personne qui trouve avec la musique
+    /// </summary>
+    /// <param name="media"></param>
+    /// <returns></returns>
+    public static string GetSomeoneWithMediaData(MediaData media)
+    {
+        return OtherMusic.First(keyValue => keyValue.Value.Contains(media)).Key;
     }
 }
