@@ -22,7 +22,13 @@ namespace BitRuisseau.Utils
         private static IMqttClient mqttClient;
         private static readonly MqttClientFactory mqttFactory = new MqttClientFactory();
 
+        
+        /// <summary>
         /// Envoie demande catalogue dès qu'il est connecté
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <param name="host"></param>
         public static async Task Connection(string username, string password, string host)
         {
             options = new MqttClientOptionsBuilder()
@@ -38,7 +44,6 @@ namespace BitRuisseau.Utils
 
             if (connectResult.ResultCode == MqttClientConnectResultCode.Success)
             {
-                // Subscribe to a topic
                 await mqttClient.SubscribeAsync(new MqttTopicFilterBuilder()
                     .WithTopic("global")
                     .WithNoLocal(true)
@@ -56,12 +61,15 @@ namespace BitRuisseau.Utils
             await Task.Delay(100);
         }
 
+        /// <summary>
         /// Quand il reçoit des messages
+        /// </summary>
+        /// <param name="message"></param>
         private static void ReiceiveMessage(MqttApplicationMessageReceivedEventArgs message)
         {
             try
             {
-                GenericEnvelope enveloppe = JsonSerializer.Deserialize<GenericEnvelope>(Encoding.UTF8.GetString(message.ApplicationMessage.Payload));
+                GenericEnvelop enveloppe = JsonSerializer.Deserialize<GenericEnvelop>(Encoding.UTF8.GetString(message.ApplicationMessage.Payload));
                 if (enveloppe.SenderId == clientId) return;
                 switch (enveloppe.MessageType)
                 {
@@ -79,7 +87,7 @@ namespace BitRuisseau.Utils
                     }
                     case MessageType.ENVOIE_FICHIER:
                     {
-                        SendMusic enveloppeSendMusic = JsonSerializer.Deserialize<SendMusic>(enveloppe.EnveloppeJson);
+                        SendMusic enveloppeSendMusic = JsonSerializer.Deserialize<SendMusic>(enveloppe.EnvelopJson);
                         break;
                     }
                 }
@@ -90,14 +98,21 @@ namespace BitRuisseau.Utils
             }
         }
 
+        /// <summary>
         /// Envoie tous les types de message
+        /// </summary>
+        /// <param name="mqttClient"></param>
+        /// <param name="type"></param>
+        /// <param name="senderId"></param>
+        /// <param name="content"></param>
+        /// <param name="topic"></param>
         private static async void SendMessage(IMqttClient mqttClient, MessageType type, string senderId, IJsonSerializableMessage content, string topic)
         {
             try
             {
-                GenericEnvelope enveloppe = new GenericEnvelope();
+                GenericEnvelop enveloppe = new GenericEnvelop();
                 enveloppe.SenderId = senderId;
-                enveloppe.EnveloppeJson = content.ToJson();
+                enveloppe.EnvelopJson = content.ToJson();
                 enveloppe.MessageType = type;
                 var message = new MqttApplicationMessageBuilder()
                     .WithTopic(topic)
@@ -111,7 +126,6 @@ namespace BitRuisseau.Utils
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                throw;
             }
         }
     }

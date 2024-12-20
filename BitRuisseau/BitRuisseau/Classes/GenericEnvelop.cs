@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace BitRuisseau.Classes
 {
-    public class GenericEnvelope
+    public class GenericEnvelop
     {
         public MessageType MessageType { get; set; }
 
         public string SenderId { get; set; }
 
-        public string EnveloppeJson { get; set; }
+        public string EnvelopJson { get; set; }
     }
 }

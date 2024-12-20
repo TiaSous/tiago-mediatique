@@ -7,28 +7,41 @@ public static class UtilMusic
 {
     public static List<MediaData> LocalMusic { get; } = new List<MediaData>();
     public static Dictionary<string, List<MediaData>> OtherMusic { get; } = new Dictionary<string, List<MediaData>>();
-
-    public static void AddMusic(MediaData media)
+    
+    /// <summary>
+    /// Ajoute la musique local
+    /// </summary>
+    /// <param name="media"></param>
+    private static void AddMusic(MediaData media)
     {
         LocalMusic.Add(media);
     }
-    public static void AddOtherMusic(GenericEnvelope envelope)
+    
+    /// <summary>
+    /// Ajoute ou met à jour le catalogue des autres en plus
+    /// </summary>
+    /// <param name="envelop"></param>
+    public static void AddOtherMusic(GenericEnvelop envelop)
     {
-        SendCatalog enveloppeSendCatalog = JsonSerializer.Deserialize<SendCatalog>(envelope.EnveloppeJson);
+        SendCatalog enveloppeSendCatalog = JsonSerializer.Deserialize<SendCatalog>(envelop.EnvelopJson);
         Console.WriteLine(enveloppeSendCatalog);
-        if (OtherMusic.ContainsKey(envelope.SenderId))
+        if (OtherMusic.ContainsKey(envelop.SenderId))
         {
-            OtherMusic[envelope.SenderId] = enveloppeSendCatalog.Content;
+            OtherMusic[envelop.SenderId] = enveloppeSendCatalog.Content;
         }
         else
         {
-            OtherMusic.Add(envelope.SenderId, new List<MediaData>());
-            OtherMusic[envelope.SenderId] = enveloppeSendCatalog.Content;
+            OtherMusic.Add(envelop.SenderId, new List<MediaData>());
+            OtherMusic[envelop.SenderId] = enveloppeSendCatalog.Content;
         }
     }
 
+    /// <summary>
+    /// Met à jour la liste de musique local
+    /// </summary>
     public static void UpdateLocalListMusic()
     {
+        LocalMusic.Clear();
         if (!Directory.Exists("C:\\BitRuisseau"))
         {
             Directory.CreateDirectory("C:\\BitRuisseau");
