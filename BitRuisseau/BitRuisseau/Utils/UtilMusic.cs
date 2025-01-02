@@ -7,7 +7,7 @@ public static class UtilMusic
 {
     public static List<MediaData> LocalMusic { get; } = new List<MediaData>();
     public static Dictionary<string, List<MediaData>> OtherMusic { get; } = new Dictionary<string, List<MediaData>>();
-    
+
     /// <summary>
     /// Ajoute la musique local
     /// </summary>
@@ -16,7 +16,7 @@ public static class UtilMusic
     {
         LocalMusic.Add(media);
     }
-    
+
     /// <summary>
     /// Ajoute ou met à jour le catalogue des autres en plus
     /// </summary>
@@ -63,7 +63,7 @@ public static class UtilMusic
             AddMusic(data);
         }
     }
-    
+
     /// <summary>
     /// Va retourner la 1ère personne qui trouve avec la musique
     /// </summary>
@@ -89,7 +89,7 @@ public static class UtilMusic
         string path = "C:\\BitRuisseau\\" + fileName;
         return Convert.ToBase64String(File.ReadAllBytes(path));
     }
-    
+
     /// <summary>
     /// Transforme la musique qui est en base 64 en MP3
     /// </summary>
