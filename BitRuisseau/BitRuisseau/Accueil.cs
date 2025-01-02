@@ -21,7 +21,7 @@ namespace BitRuisseau
 
         private void ValidateButton_Click(object sender, EventArgs e)
         {
-           UtilBroker.Connection(User.Text, Password.Text, Host.Text);
+            UtilBroker.Connection(User.Text, Password.Text, Host.Text);
         }
 
         private void Explorer_Click(object sender, EventArgs e)

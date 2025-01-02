@@ -22,7 +22,7 @@ namespace BitRuisseau.Utils
         private static IMqttClient mqttClient;
         private static readonly MqttClientFactory mqttFactory = new MqttClientFactory();
 
-        
+
         /// <summary>
         /// Envoie demande catalogue dès qu'il est connecté
         /// </summary>
@@ -89,33 +89,33 @@ namespace BitRuisseau.Utils
                 switch (envelope.MessageType)
                 {
                     case MessageType.ENVOIE_CATALOGUE:
-                    {
-                        UtilMusic.AddOtherMusic(envelope);
-                        break;
-                    }
+                        {
+                            UtilMusic.AddOtherMusic(envelope);
+                            break;
+                        }
                     case MessageType.DEMANDE_CATALOGUE:
-                    {
-                        SendCatalog sendCatalog = new SendCatalog();
-                        sendCatalog.Content = UtilMusic.LocalMusic;
-                        SendMessage(MessageType.ENVOIE_CATALOGUE, clientId, sendCatalog, "global");
-                        break;
-                    }
+                        {
+                            SendCatalog sendCatalog = new SendCatalog();
+                            sendCatalog.Content = UtilMusic.LocalMusic;
+                            SendMessage(MessageType.ENVOIE_CATALOGUE, clientId, sendCatalog, "global");
+                            break;
+                        }
                     case MessageType.DEMANDE_FICHIER:
-                    {
-                        AskMusic askMusic = JsonSerializer.Deserialize<AskMusic>(envelope.EnvelopeJson);
-                        SendMusic sendMusic = new SendMusic();
-                        sendMusic.Content = UtilMusic.TransformMediaInBase64(askMusic.FileName);
-                        sendMusic.FileInfo = UtilMusic.GetMediaDataWithFileName(askMusic.FileName);
-                        SendMessage(MessageType.ENVOIE_FICHIER, clientId, sendMusic, envelope.SenderId);
-                        break;
-                    }
+                        {
+                            AskMusic askMusic = JsonSerializer.Deserialize<AskMusic>(envelope.EnvelopeJson);
+                            SendMusic sendMusic = new SendMusic();
+                            sendMusic.Content = UtilMusic.TransformMediaInBase64(askMusic.FileName);
+                            sendMusic.FileInfo = UtilMusic.GetMediaDataWithFileName(askMusic.FileName);
+                            SendMessage(MessageType.ENVOIE_FICHIER, clientId, sendMusic, envelope.SenderId);
+                            break;
+                        }
                     case MessageType.ENVOIE_FICHIER:
-                    {
-                        SendMusic sendMusic = JsonSerializer.Deserialize<SendMusic>(envelope.EnvelopeJson);
-                        UtilMusic.TransformBase64InMedia(sendMusic);
-                        UtilMusic.UpdateLocalListMusic();
-                        break;
-                    }
+                        {
+                            SendMusic sendMusic = JsonSerializer.Deserialize<SendMusic>(envelope.EnvelopeJson);
+                            UtilMusic.TransformBase64InMedia(sendMusic);
+                            UtilMusic.UpdateLocalListMusic();
+                            break;
+                        }
                 }
             }
             catch (Exception ex)

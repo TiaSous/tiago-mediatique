@@ -18,11 +18,11 @@ namespace BitRuisseau
         public ExplorerForm()
         {
             InitializeComponent();
- 
+
             sourceData = UtilMusic.OtherMusic.Values.SelectMany(list => list).ToList();
             LocalFileView.DataSource = sourceData;
             LocalFileView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            
+
         }
 
         private void LocalFileView_CellContentClick(object sender, DataGridViewCellEventArgs e)
