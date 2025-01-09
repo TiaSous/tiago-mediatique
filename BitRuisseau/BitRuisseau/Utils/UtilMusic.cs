@@ -8,7 +8,7 @@ public static class UtilMusic
     public static List<MediaData> LocalMusic { get; } = new List<MediaData>();
     public static Dictionary<string, List<MediaData>> OtherMusic { get; } = new Dictionary<string, List<MediaData>>();
     public static string pathMusics = "C:\\BitRuisseau";
-    
+
     /// <summary>
     /// Ajoute la musique locale
     /// </summary>
@@ -17,7 +17,7 @@ public static class UtilMusic
     {
         LocalMusic.Add(media);
     }
-    
+
     /// <summary>
     /// Ajoute ou met à jour le catalogue des autres en plus
     /// </summary>
@@ -50,10 +50,10 @@ public static class UtilMusic
 
         foreach (string path in paths)
         {
-            MediaData data = new MediaData();
+            MediaData data = new();
             var tfile = TagLib.File.Create(path);
 
-            FileInfo fileInfo = new FileInfo(path);
+            FileInfo fileInfo = new(path);
             data.Size = fileInfo.Length;
 
             data.Title = fileInfo.Name.Replace(fileInfo.Extension, "");
@@ -64,7 +64,7 @@ public static class UtilMusic
             AddMusic(data);
         }
     }
-    
+
     /// <summary>
     /// Va retourner la 1ère personne qui trouve avec la musique
     /// </summary>
@@ -90,7 +90,7 @@ public static class UtilMusic
         string path = "C:\\BitRuisseau\\" + fileName;
         return Convert.ToBase64String(File.ReadAllBytes(path));
     }
-    
+
     /// <summary>
     /// Transforme la musique qui est en base 64 en MP3
     /// </summary>
