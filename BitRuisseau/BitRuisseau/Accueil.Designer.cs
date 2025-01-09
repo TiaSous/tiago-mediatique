@@ -38,6 +38,7 @@
             label1 = new System.Windows.Forms.Label();
             Explorer = new System.Windows.Forms.Button();
             LocalFileView = new System.Windows.Forms.DataGridView();
+            Actualiser = new System.Windows.Forms.Button();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)LocalFileView).BeginInit();
             SuspendLayout();
@@ -133,11 +134,22 @@
             LocalFileView.Size = new System.Drawing.Size(861, 454);
             LocalFileView.TabIndex = 1;
             // 
+            // Actualiser
+            // 
+            Actualiser.Location = new System.Drawing.Point(1147, 149);
+            Actualiser.Name = "Actualiser";
+            Actualiser.Size = new System.Drawing.Size(75, 23);
+            Actualiser.TabIndex = 2;
+            Actualiser.Text = "Actualiser";
+            Actualiser.UseVisualStyleBackColor = true;
+            Actualiser.Click += Actualiser_Click;
+            // 
             // Accueil
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1264, 681);
+            Controls.Add(Actualiser);
             Controls.Add(LocalFileView);
             Controls.Add(panel1);
             Text = "Accueil";
@@ -146,6 +158,8 @@
             ((System.ComponentModel.ISupportInitialize)LocalFileView).EndInit();
             ResumeLayout(false);
         }
+
+        private System.Windows.Forms.Button Actualiser;
 
         #endregion
 
