@@ -39,7 +39,8 @@ namespace BitRuisseau
         private void Actualiser_Click(object sender, EventArgs e)
         {
             UtilMusic.UpdateLocalListMusic();
-            LocalFileView.DataSource = null;
+            // Réinitialise la vue pour éviter les conflits de données et ne peut donc pas être enlevé comme demander par deepsource
+            LocalFileView.DataSource = null; // skipcq: CS-W1082
             LocalFileView.DataSource = UtilMusic.LocalMusic;
             LocalFileView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             LocalFileView.Refresh();
