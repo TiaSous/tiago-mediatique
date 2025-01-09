@@ -7,9 +7,10 @@ public static class UtilMusic
 {
     public static List<MediaData> LocalMusic { get; } = new List<MediaData>();
     public static Dictionary<string, List<MediaData>> OtherMusic { get; } = new Dictionary<string, List<MediaData>>();
+    public static string pathMusics = "C:\\BitRuisseau";
     
     /// <summary>
-    /// Ajoute la musique local
+    /// Ajoute la musique locale
     /// </summary>
     /// <param name="media"></param>
     private static void AddMusic(MediaData media)
@@ -41,11 +42,11 @@ public static class UtilMusic
     public static void UpdateLocalListMusic()
     {
         LocalMusic.Clear();
-        if (!Directory.Exists("C:\\BitRuisseau"))
+        if (!Directory.Exists(pathMusics))
         {
-            Directory.CreateDirectory("C:\\BitRuisseau");
+            Directory.CreateDirectory(pathMusics);
         }
-        string[] paths = Directory.GetFiles("C:\\BitRuisseau");
+        string[] paths = Directory.GetFiles(pathMusics);
 
         foreach (string path in paths)
         {

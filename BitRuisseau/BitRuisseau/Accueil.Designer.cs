@@ -133,6 +133,7 @@
             LocalFileView.Name = "LocalFileView";
             LocalFileView.Size = new System.Drawing.Size(861, 454);
             LocalFileView.TabIndex = 1;
+            LocalFileView.CellClick += LocalFileView_CellClick;
             // 
             // Actualiser
             // 
@@ -164,7 +165,7 @@
         #endregion
 
         private System.Windows.Forms.Panel panel1;
-        private DataGridView LocalFileView;
+        private System.Windows.Forms.DataGridView LocalFileView;
         private System.Windows.Forms.Button Explorer;
         private Label label1;
         private TextBox Password;

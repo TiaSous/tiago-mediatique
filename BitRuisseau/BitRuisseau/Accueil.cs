@@ -44,5 +44,24 @@ namespace BitRuisseau
             LocalFileView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             LocalFileView.Refresh();
         }
+
+        private void LocalFileView_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            try
+            {
+                MediaData searchMusic = UtilMusic.LocalMusic[e.RowIndex];
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = UtilMusic.pathMusics + "\\" + searchMusic.Title + searchMusic.Type,
+                    UseShellExecute = true 
+                });
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show($"Erreur : Ouverture du fichier impossible", "Échec de l'ouverture du fichier", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            
+        }
     }
 }

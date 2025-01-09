@@ -25,10 +25,19 @@ namespace BitRuisseau
             
         }
 
-        private void LocalFileView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void LocalFileView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            MediaData searchMusic = sourceData[e.RowIndex];
-            UtilBroker.AskForMusic(searchMusic);
+            if (e.RowIndex < 0) return;
+            try
+            {
+                MediaData searchMusic = sourceData[e.RowIndex];
+                UtilBroker.AskForMusic(searchMusic);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show($"Erreur : Téléchargement du fichier impossible", "Échec du téléchargement du fichier", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            
         }
     }
 }

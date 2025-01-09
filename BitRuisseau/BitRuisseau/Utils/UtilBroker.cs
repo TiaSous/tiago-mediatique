@@ -77,7 +77,7 @@ namespace BitRuisseau.Utils
         }
 
         /// <summary>
-        /// Quand il reçoit des messages
+        /// Quand il reçoit des messages.
         /// </summary>
         /// <param name="message"></param>
         private static void ReceiveMessage(MqttApplicationMessageReceivedEventArgs message)
@@ -125,7 +125,7 @@ namespace BitRuisseau.Utils
         }
 
         /// <summary>
-        /// Envoie tous les types de message
+        /// Envoie tous les types de message.
         /// </summary>
         /// <param name="mqttClient"></param>
         /// <param name="type"></param>

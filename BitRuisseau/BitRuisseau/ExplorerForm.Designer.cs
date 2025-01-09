@@ -47,7 +47,7 @@
             LocalFileView.Name = "LocalFileView";
             LocalFileView.Size = new System.Drawing.Size(861, 454);
             LocalFileView.TabIndex = 1;
-            LocalFileView.CellContentClick += LocalFileView_CellContentClick;
+            LocalFileView.CellClick += LocalFileView_CellClick;
             // 
             // ExplorerForm
             // 
