@@ -50,10 +50,10 @@ public static class UtilMusic
 
         foreach (string path in paths)
         {
-            MediaData data = new MediaData();
+            MediaData data = new();
             var tfile = TagLib.File.Create(path);
 
-            FileInfo fileInfo = new FileInfo(path);
+            FileInfo fileInfo = new(path);
             data.Size = fileInfo.Length;
 
             data.Title = fileInfo.Name.Replace(fileInfo.Extension, "");
