@@ -22,9 +22,9 @@ namespace BitRuisseau
 
         private void ValidateButton_Click(object sender, EventArgs e)
         {
-           UtilBroker.Connection(User.Text, Password.Text, Host.Text);
+            UtilBroker.Connection(User.Text, Password.Text, Host.Text);
         }
-        
+
         private void Explorer_Click(object sender, EventArgs e)
         {
             ExplorerForm explorerForm = new();
@@ -55,14 +55,14 @@ namespace BitRuisseau
                 Process.Start(new ProcessStartInfo
                 {
                     FileName = UtilMusic.pathMusics + "\\" + searchMusic.Title + searchMusic.Type,
-                    UseShellExecute = true 
+                    UseShellExecute = true
                 });
             }
             catch (Exception exception)
             {
                 MessageBox.Show($"Erreur : Ouverture du fichier impossible", "Échec de l'ouverture du fichier", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            
+
         }
     }
 }
