@@ -80,7 +80,7 @@ public static class UtilMusic
         string nameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
         return LocalMusic.First(music => music.Title == nameWithoutExtension);
     }
-    
+
     /// <summary>
     /// Transforme les médias en base 64
     /// </summary>
