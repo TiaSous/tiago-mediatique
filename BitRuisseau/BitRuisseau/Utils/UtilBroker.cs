@@ -21,6 +21,7 @@ namespace BitRuisseau.Utils
         private static MqttClientOptions options;
         private static IMqttClient mqttClient;
         private static readonly MqttClientFactory mqttFactory = new();
+        private static string topicCatalogue = "1234";
 
 
         /// <summary>
@@ -47,7 +48,7 @@ namespace BitRuisseau.Utils
                 if (connectResult.ResultCode == MqttClientConnectResultCode.Success)
                 {
                     await mqttClient.SubscribeAsync(new MqttTopicFilterBuilder()
-                        .WithTopic("global")
+                        .WithTopic(topicCatalogue)
                         .WithNoLocal(true)
                         .Build());
 
@@ -62,7 +63,7 @@ namespace BitRuisseau.Utils
                         return Task.CompletedTask;
                     };
                     AskCatalog askCatalog = new();
-                    SendMessage(MessageType.DEMANDE_CATALOGUE, clientId, askCatalog, "global");
+                    SendMessage(MessageType.DEMANDE_CATALOGUE, clientId, askCatalog, topicCatalogue);
                     MessageBox.Show("Connexion réussie!", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
@@ -97,7 +98,7 @@ namespace BitRuisseau.Utils
                         {
                             SendCatalog sendCatalog = new();
                             sendCatalog.Content = UtilMusic.LocalMusic;
-                            SendMessage(MessageType.ENVOIE_CATALOGUE, clientId, sendCatalog, "global");
+                            SendMessage(MessageType.ENVOIE_CATALOGUE, clientId, sendCatalog, topicCatalogue);
                             break;
                         }
                     case MessageType.DEMANDE_FICHIER:
@@ -160,6 +161,12 @@ namespace BitRuisseau.Utils
             AskMusic askMusic = new();
             askMusic.FileName = mediaData.Title + mediaData.Type;
             SendMessage(MessageType.DEMANDE_FICHIER, clientId, askMusic, UtilMusic.GetSomeoneWithMediaData(mediaData));
+        }
+
+        public static void AskForCatalogue()
+        {
+            AskCatalog askCatalog = new();
+            SendMessage(MessageType.DEMANDE_CATALOGUE, clientId, askCatalog, topicCatalogue);
         }
     }
 }

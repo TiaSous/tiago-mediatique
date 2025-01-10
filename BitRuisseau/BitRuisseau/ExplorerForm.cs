@@ -39,5 +39,15 @@ namespace BitRuisseau
             }
             
         }
+
+        private void BtnActualize_Click(object sender, EventArgs e)
+        {
+            UtilBroker.AskForCatalogue();
+            LocalFileView.DataSource = null; // skipcq: CS-W1082
+            sourceData = UtilMusic.OtherMusic.Values.SelectMany(list => list).ToList();
+            LocalFileView.DataSource = sourceData;
+            LocalFileView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            LocalFileView.Refresh();
+        }
     }
 }

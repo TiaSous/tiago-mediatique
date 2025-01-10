@@ -30,6 +30,7 @@
         {
             panel1 = new System.Windows.Forms.Panel();
             LocalFileView = new System.Windows.Forms.DataGridView();
+            BtnActualize = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)LocalFileView).BeginInit();
             SuspendLayout();
             // 
@@ -49,17 +50,30 @@
             LocalFileView.TabIndex = 1;
             LocalFileView.CellClick += LocalFileView_CellClick;
             // 
+            // BtnActualize
+            // 
+            BtnActualize.Location = new System.Drawing.Point(1147, 149);
+            BtnActualize.Name = "BtnActualize";
+            BtnActualize.Size = new System.Drawing.Size(75, 23);
+            BtnActualize.TabIndex = 2;
+            BtnActualize.Text = "Actualiser";
+            BtnActualize.UseVisualStyleBackColor = true;
+            BtnActualize.Click += BtnActualize_Click;
+            // 
             // ExplorerForm
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1264, 681);
+            Controls.Add(BtnActualize);
             Controls.Add(LocalFileView);
             Controls.Add(panel1);
             Text = "Explorer";
             ((System.ComponentModel.ISupportInitialize)LocalFileView).EndInit();
             ResumeLayout(false);
         }
+
+        private System.Windows.Forms.Button BtnActualize;
 
         #endregion
 
