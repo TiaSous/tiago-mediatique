@@ -18,11 +18,11 @@ namespace BitRuisseau
         public ExplorerForm()
         {
             InitializeComponent();
- 
+
             sourceData = UtilMusic.OtherMusic.Values.SelectMany(list => list).ToList();
             LocalFileView.DataSource = sourceData;
             LocalFileView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            
+
         }
 
         private void LocalFileView_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -37,7 +37,7 @@ namespace BitRuisseau
             {
                 MessageBox.Show($"Erreur : Téléchargement du fichier impossible", "Échec du téléchargement du fichier", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            
+
         }
 
         private void BtnActualize_Click(object sender, EventArgs e)
